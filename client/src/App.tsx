@@ -6,11 +6,13 @@ import Register from "./views/Register";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Login from "./views/Login";
+import Alert from "./components/alert/Alert";
 
 const App = () => {
   return (
     <div className="container">
       <Router>
+        <Alert />
         <Header />
         <Switch>
           <Route exact path="/" component={Home} />

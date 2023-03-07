@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import LoginInput from "../components/auth/LoginInput";
+import LoginAccount from "../components/auth/LoginAccount";
 import { Link } from "react-router-dom";
 import "../styles/auth.css";
+import LoginSMS from "../components/auth/LoginSMS";
 
 const Login = () => {
   const [sms, setSms] = useState(false);
@@ -11,7 +12,7 @@ const Login = () => {
       <div className="auth_box">
         <h3 className="text-uppercase text-center mb-4">Login</h3>
 
-        <LoginInput />
+        {sms ? <LoginSMS /> : <LoginAccount />}
 
         <small className="row my-2 text-primary" style={{ cursor: "pointer" }}>
           <span className="col-6">
