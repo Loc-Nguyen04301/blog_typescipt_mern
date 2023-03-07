@@ -25,3 +25,8 @@
   cursor: pointer;
   opacity: 0.5;
 }
+
+.auth-page input::placeholder{
+    opacity: 0.5;
+    font-size: 80%;
+}

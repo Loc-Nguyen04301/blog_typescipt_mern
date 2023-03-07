@@ -9,11 +9,11 @@ const Alert = () => {
   const errors = useSelector((state: RootStore) => state.alert.errors);
 
   return (
-    <div>
+    <>
       {loading && <Loading />}
       {success && <Toast title="Success" body={success} bgColor="bg-success" />}
       {errors && <Toast title="Errors" body={errors} bgColor="bg-danger" />}
-    </div>
+    </>
   );
 };
 

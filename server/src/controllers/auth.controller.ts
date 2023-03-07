@@ -16,7 +16,6 @@ import {
   InterfaceNewUser,
   InterfaceUser,
 } from "../config/interface";
-import { decode } from "punycode";
 
 const saltRound = 10;
 
@@ -41,7 +40,10 @@ const authController = {
 
       if (validateEmail(account)) {
         sendMail(account, url, "Verify your email address");
-        return res.json({ message: "Success! Please check your email." });
+        return res.json({
+          message: "Success! Please check your email.",
+          active_token,
+        });
       } else if (validPhone(account)) {
         sendSMS(account, url, "Verify your phone number");
         return res.json({ message: "Success! Please check phone." });
@@ -118,7 +120,6 @@ const authController = {
       const access_token = generateAccessToken({ id: user._id });
 
       return res.json({ access_token });
-      
     } catch (err: any) {
       return res.status(500).json({ message: err.message });
     }
@@ -133,8 +134,6 @@ const authController = {
     }
   },
 };
-
-
 
 const loginUser = async (
   user: InterfaceUser,

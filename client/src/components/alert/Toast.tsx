@@ -22,6 +22,7 @@ const Toast = ({ title, body, bgColor }: IProps) => {
     >
       <div className={`toast-header text-light ${bgColor}`}>
         <strong className="me-auto">{title}</strong>
+        {/* success alert */}
         <button
           type="button"
           className="btn-close"
@@ -30,7 +31,7 @@ const Toast = ({ title, body, bgColor }: IProps) => {
           onClick={handleClose}
         />
       </div>
-
+      {/* error alert */}
       <div className="toast-body">
         {typeof body === "string" ? (
           body
