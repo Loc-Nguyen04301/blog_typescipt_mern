@@ -32,8 +32,3 @@ export interface IUser extends IUserLogin {
   updatedAt: string;
 }
 
-export interface IAlert {
-  loading?: boolean;
-  success?: string | string[];
-  errors?: string | string[];
-}

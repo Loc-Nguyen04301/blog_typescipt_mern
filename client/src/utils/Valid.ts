@@ -29,7 +29,7 @@ export const validRegister = (userRegister: IUserRegister) => {
 };
 
 export const validPhoneNumber = (phoneNumber: string) => {
-  const re = /^[+]/g;
+  const re = /([\+84|84|0]+(3|5|7|8|9|1[2|6|8|9]))+([0-9]{8})\b/g;
   return re.test(phoneNumber);
 };
 

@@ -12,14 +12,15 @@ var corsOptions = {
 
 // Middleware
 const app = express();
+// cookies
+app.use(cookieParser());
 // parse requests of content-type - application/json
 app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
-// interact client to  server
+// interact client to server
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
-app.use(cookieParser());
 
 //Init Routes
 import initRoutes from "./routes";
