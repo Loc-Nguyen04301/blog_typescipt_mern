@@ -32,3 +32,6 @@ export interface IUser extends IUserLogin {
   updatedAt: string;
 }
 
+export interface IUserProfile extends IUserRegister {
+  avatar: string | File;
+}

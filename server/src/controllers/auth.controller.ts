@@ -43,6 +43,7 @@ const loginUser = async (
   return res.json({
     message: "Login Successfully",
     access_token,
+    refresh_token,
     user: { ...user._doc },
   });
 };
@@ -128,8 +129,7 @@ const authController = {
 
   refreshToken: async (req: Request, res: Response) => {
     try {
-      console.log(req);
-      const refresh_token = req.cookies["REFRESH_TOKEN"];
+      const refresh_token = req.cookies.REFRESH_TOKEN;
       if (!refresh_token)
         return res.status(400).json({ message: "Please login now!" });
 

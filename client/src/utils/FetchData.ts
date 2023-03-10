@@ -6,6 +6,7 @@ export const postAPI = async (url: string, data: object, token?: string) => {
     data,
     {
       headers: { Authorization: token },
+      withCredentials: true,
     }
   );
 
@@ -17,6 +18,7 @@ export const getAPI = async (url: string, token?: string) => {
     `${import.meta.env.VITE_SERVER_URL}/api/v1/${url}`,
     {
       headers: { Authorization: token },
+      withCredentials: true,
     }
   );
   return res;

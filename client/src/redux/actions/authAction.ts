@@ -3,7 +3,7 @@ import { IUserLogin, IUserRegister } from "../../utils/TypeScript";
 import { postAPI, getAPI } from "../../utils/FetchData";
 import { AUTH, IAuthType } from "../types/authType";
 import { ALERT, IAlertType } from "../types/alertType";
-import { Dispatch } from "react";
+import { Dispatch } from "redux";
 import { validRegister } from "../../utils/Valid";
 
 export const login =
