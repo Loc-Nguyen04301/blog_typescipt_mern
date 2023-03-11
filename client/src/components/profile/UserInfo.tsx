@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootStore, InputChange, FormSubmit } from "../../utils/TypeScript";
 import NotFound from "../../views/NotFound";
-import { updateUser } from "../../redux/actions/profileAction";
+import { updateUser, resetPassword } from "../../redux/actions/profileAction";
 
 const UserInfo = () => {
   const { auth } = useSelector((state: RootStore) => state);
@@ -33,7 +33,11 @@ const UserInfo = () => {
 
   const handleSubmit = (e: FormSubmit) => {
     e.preventDefault();
+
     if (avatar || name) dispatch(updateUser(avatar as File, name, auth));
+
+    if (password && auth.access_token)
+      dispatch(resetPassword(password, confirmPassword, auth));
   };
 
   if (!auth.user) return <NotFound />;

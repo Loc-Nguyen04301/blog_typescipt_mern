@@ -12,15 +12,15 @@ import { validateEmail, validPhone } from "../middlewares/valid";
 import sendMail from "../config/sendMail";
 import { sendSMS, smsOTP, smsVerify } from "../config/sendSMS";
 import {
-  InterfaceDecodedToken,
-  InterfaceNewUser,
-  InterfaceUser,
+  IDecodedToken,
+  INewUser,
+  IUser,
 } from "../config/interface";
 
 const saltRound = 10;
 
 const loginUser = async (
-  user: InterfaceUser,
+  user: IUser,
   password: string,
   res: Response
 ) => {
@@ -86,7 +86,7 @@ const authController = {
     try {
       const { active_token } = req.body;
 
-      const decoded = <InterfaceDecodedToken>(
+      const decoded = <IDecodedToken>(
         jwt.verify(active_token, `${process.env.ACTIVE_TOKEN_SECRET}`)
       );
 
@@ -133,7 +133,7 @@ const authController = {
       if (!refresh_token)
         return res.status(400).json({ message: "Please login now!" });
 
-      const decoded = <InterfaceDecodedToken>(
+      const decoded = <IDecodedToken>(
         jwt.verify(refresh_token, `${process.env.REFRESH_TOKEN_SECRET}`)
       );
 

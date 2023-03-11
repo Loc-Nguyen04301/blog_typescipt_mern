@@ -1,6 +1,7 @@
 import { Document } from "mongoose";
+import { Request } from "express";
 
-export interface InterfaceUser extends Document {
+export interface IUser extends Document {
   name: string;
   account: string;
   password: string;
@@ -10,15 +11,27 @@ export interface InterfaceUser extends Document {
   _doc: object;
 }
 
-export interface InterfaceNewUser {
+export interface INewUser {
   name: string;
   account: string;
   password: string;
 }
 
-export interface InterfaceDecodedToken {
+export interface IDecodedToken {
   id?: string;
-  newUser?: InterfaceNewUser;
+  newUser?: INewUser;
   iat: number;
   exp: number;
+}
+
+export interface IUserParams {
+  name: string;
+  account: string;
+  password: string;
+  avatar?: string;
+  type: string;
+}
+
+export interface IReqAuth extends Request {
+  user?: IUser;
 }
