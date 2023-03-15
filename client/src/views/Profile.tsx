@@ -7,6 +7,7 @@ import UserInfo from "../components/profile/UserInfo";
 import OtherInfo from "../components/profile/OtherInfo";
 import UserBlogs from "../components/profile/UserBlogs";
 import "../styles/profile.css";
+
 const Profile = () => {
   const { slug } = useParams<IParams>();
   const { access_token, user } = useSelector((state: RootStore) => state.auth);

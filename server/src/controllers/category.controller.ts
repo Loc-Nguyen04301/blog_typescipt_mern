@@ -40,6 +40,7 @@ const categoryController = {
       return res.status(400).json({ message: "Invalid Authentication." });
 
     try {
+      console.log(req.body);
       await Categories.findOneAndUpdate(
         {
           _id: req.params.id,
@@ -60,7 +61,7 @@ const categoryController = {
       return res.status(400).json({ message: "Invalid Authentication." });
 
     try {
-      const category = await Categories.findByIdAndDelete(req.params.id);
+      await Categories.findByIdAndDelete(req.params.id);
       return res.json({ message: "Delete Success!" });
     } catch (err: any) {
       return res.status(500).json({ message: err.message });

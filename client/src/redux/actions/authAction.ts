@@ -96,6 +96,7 @@ export const logout =
     try {
       localStorage.removeItem("logged");
       const res = await getAPI("auth/logout");
+      console.log(res);
       window.location.href = "/";
     } catch (error: any) {
       dispatch({

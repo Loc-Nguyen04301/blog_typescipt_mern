@@ -4,7 +4,6 @@ import Home from "./views/Home";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-
 import Alert from "./components/alert/Alert";
 
 import NotFound from "./views/NotFound";
@@ -12,8 +11,10 @@ import Register from "./views/Register";
 import Login from "./views/Login";
 import Profile from "./views/Profile";
 import CreateBlog from "./views/CreateBlog";
+import Category from "./views/Category";
 
 import { refreshToken } from "./redux/actions/authAction";
+import { getCategories } from "./redux/actions/categoryAction";
 import { useDispatch } from "react-redux";
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(refreshToken());
+    dispatch(getCategories());
   }, [dispatch]);
 
   return (
@@ -33,6 +35,7 @@ const App = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/create_blog" component={CreateBlog} />
+          <Route exact path="/category" component={Category} />
           <Route exact path="/:slug" component={Profile} />
           <Route exact path="*" component={NotFound} />
         </Switch>

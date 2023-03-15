@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import LoginAccount from "../components/auth/LoginAccount";
 import { Link } from "react-router-dom";
-import "../styles/auth.css";
 import LoginSMS from "../components/auth/LoginSMS";
 import RegisterForm from "../components/auth/RegisterForm";
+import "../styles/auth.css";
 
 const Register = () => {
   const [sms, setSms] = useState(false);
