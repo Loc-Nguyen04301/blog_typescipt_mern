@@ -6,7 +6,6 @@ import "../styles/category.css";
 import {
   createCategory,
   deleteCategory,
-  // getCategories,
   updateCategory,
 } from "../redux/actions/categoryAction";
 import { ICategory } from "../redux/types/categoryType";
@@ -52,9 +51,6 @@ const Category = () => {
     }
   }, [edit]);
 
-  // useEffect(() => {
-  //   dispatch(getCategories());
-  // }, [dispatch]);
 
   if (auth.user && auth.user.role !== "admin") return <NotFound />;
   return (

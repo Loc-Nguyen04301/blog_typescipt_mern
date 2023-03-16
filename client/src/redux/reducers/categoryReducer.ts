@@ -14,10 +14,6 @@ const categoryReducer = (state: ICategory[] = [], action: ICategoryType) => {
     case GET_CATEGORIES:
       return action.payload;
     case UPDATE_CATEGORY:
-      // const updateItem = state.find(
-      //   (item) => item._id === action.payload._id
-      // );
-      // return
       return state.map((item) => {
         if (item._id === action.payload._id) return action.payload;
         else return item;

@@ -35,3 +35,14 @@ export interface IUser extends IUserLogin {
 export interface IUserProfile extends IUserRegister {
   avatar: string | File;
 }
+
+export interface IBlog {
+  _id?: string;
+  user: string | IUser;
+  title: string;
+  content: string;
+  description: string;
+  thumbnail: string | File;
+  category: string;
+  createdAt: string;
+}
