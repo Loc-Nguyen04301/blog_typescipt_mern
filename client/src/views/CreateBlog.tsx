@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootStore, IBlog } from "../utils/TypeScript";
+import { RootStore } from "../utils/TypeScript";
+import { IBlog } from "../redux/types/blogType";
 import NotFound from "./NotFound";
 import CreateForm from "../components/card/CreateForm";
 import CardHoriz from "../components/card/CardHoriz";

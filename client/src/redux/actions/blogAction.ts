@@ -1,7 +1,10 @@
+import { getAPI } from "./../../utils/FetchData";
 import { Dispatch } from "redux";
-import { IBlog } from "../../utils/TypeScript";
+import { IBlog } from "../types/blogType";
 import { imageUpload } from "../../utils/ImageUpload";
 import { ALERT, IAlertType } from "../types/alertType";
+import { GET_HOME_BLOGS, IGetHomeBlogsType } from "../types/blogType";
+import { postAPI } from "../../utils/FetchData";
 
 export const createBlog =
   (blog: IBlog, token: string) => async (dispatch: Dispatch<IAlertType>) => {
@@ -14,9 +17,30 @@ export const createBlog =
       } else {
         url = blog.thumbnail;
       }
-      console.log(url);
+
       const newBlog = { ...blog, thumbnail: url };
-      console.log(newBlog);
+      // Call API create Blog
+      const res = postAPI("blog", newBlog, token);
+      console.log(res);
+
+      dispatch({ type: ALERT, payload: { loading: false } });
+    } catch (error: any) {
+      dispatch({
+        type: ALERT,
+        payload: { errors: error.response.data.message },
+      });
+    }
+  };
+
+export const getHomeBlogs =
+  () => async (dispatch: Dispatch<IAlertType | IGetHomeBlogsType>) => {
+    try {
+      dispatch({ type: ALERT, payload: { loading: true } });
+      // Call API get Blogs
+      const res = await getAPI("blog/home/blogs");
+      console.log(res);
+      dispatch({ type: GET_HOME_BLOGS, payload: res.data });
+      
       dispatch({ type: ALERT, payload: { loading: false } });
     } catch (error: any) {
       dispatch({

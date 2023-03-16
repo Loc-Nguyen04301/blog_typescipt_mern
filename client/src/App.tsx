@@ -15,6 +15,7 @@ import Category from "./views/Category";
 
 import { refreshToken } from "./redux/actions/authAction";
 import { getCategories } from "./redux/actions/categoryAction";
+import { getHomeBlogs } from "./redux/actions/blogAction";
 import { useDispatch } from "react-redux";
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
   useEffect(() => {
     dispatch(refreshToken());
     dispatch(getCategories());
+    dispatch(getHomeBlogs());
   }, [dispatch]);
 
   return (

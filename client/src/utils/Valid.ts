@@ -1,4 +1,5 @@
-import { IBlog, IUserRegister } from "./TypeScript";
+import { IUserRegister } from "./TypeScript";
+import { IBlog } from "../redux/types/blogType";
 
 export const validRegister = (userRegister: IUserRegister) => {
   const { name, account, password, confirmPassword } = userRegister;

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IBlog } from "../../utils/TypeScript";
+import { IBlog } from "../../redux/types/blogType";
 
 interface IProps {
   blog: IBlog;

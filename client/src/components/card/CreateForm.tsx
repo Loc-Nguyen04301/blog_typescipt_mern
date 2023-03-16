@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { RootStore, IBlog, InputChange } from "../../utils/TypeScript";
+import { RootStore, InputChange } from "../../utils/TypeScript";
+import { IBlog } from "../../redux/types/blogType";
 
 interface IProps {
   blog: IBlog;
