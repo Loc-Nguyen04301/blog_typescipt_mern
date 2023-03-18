@@ -1,9 +1,14 @@
+import { GET_BLOGS_CATEGORY_ID } from "./../types/blogType";
 import { getAPI } from "./../../utils/FetchData";
 import { Dispatch } from "redux";
-import { IBlog } from "../types/blogType";
 import { imageUpload } from "../../utils/ImageUpload";
 import { ALERT, IAlertType } from "../types/alertType";
-import { GET_HOME_BLOGS, IGetHomeBlogsType } from "../types/blogType";
+import {
+  GET_HOME_BLOGS,
+  IGetHomeBlogsType,
+  IBlog,
+  IGetBlogsCategoryIdType,
+} from "../types/blogType";
 import { postAPI } from "../../utils/FetchData";
 
 export const createBlog =
@@ -40,7 +45,26 @@ export const getHomeBlogs =
       const res = await getAPI("blog/home/blogs");
       console.log(res);
       dispatch({ type: GET_HOME_BLOGS, payload: res.data });
+
+      dispatch({ type: ALERT, payload: { loading: false } });
+    } catch (error: any) {
+      dispatch({
+        type: ALERT,
+        payload: { errors: error.response.data.message },
+      });
+    }
+  };
+
+export const getBlogsByCategoryId =
+  (id: string) =>
+  async (dispatch: Dispatch<IAlertType | IGetBlogsCategoryIdType>) => {
+    try {
+      dispatch({ type: ALERT, payload: { loading: true } });
       
+      const res = await getAPI(`blog/blogs/${id}`);
+      console.log(res);
+      dispatch({ type: GET_BLOGS_CATEGORY_ID, payload: { ...res.data, id } });
+
       dispatch({ type: ALERT, payload: { loading: false } });
     } catch (error: any) {
       dispatch({

@@ -1,4 +1,5 @@
 import React from "react";
+import Loading from "../components/alert/Loading";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootStore } from "../utils/TypeScript";
@@ -8,6 +9,7 @@ import "../styles/home.css";
 
 const Home = () => {
   const { homeBlogs } = useSelector((state: RootStore) => state);
+  if (homeBlogs.length === 0) return <Loading />;
   return (
     <div className="home_page">
       {homeBlogs &&

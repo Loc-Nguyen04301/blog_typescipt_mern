@@ -14,10 +14,7 @@ export const createCategory =
   (name: string, token: string) =>
   async (dispatch: Dispatch<IAlertType | ICategoryType>) => {
     try {
-      dispatch({
-        type: ALERT,
-        payload: { loading: true },
-      });
+      dispatch({ type: ALERT, payload: { loading: true } });
       const res = await postAPI("category", { name }, token);
       console.log(res);
       dispatch({ type: CREATE_CATEGORY, payload: res.data.newCategory });

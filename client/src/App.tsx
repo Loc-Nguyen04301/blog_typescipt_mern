@@ -17,6 +17,7 @@ import { refreshToken } from "./redux/actions/authAction";
 import { getCategories } from "./redux/actions/categoryAction";
 import { getHomeBlogs } from "./redux/actions/blogAction";
 import { useDispatch } from "react-redux";
+import BlogsByCategory from "./views/BlogsByCategory";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const App = () => {
           <Route exact path="/create_blog" component={CreateBlog} />
           <Route exact path="/category" component={Category} />
           <Route exact path="/:slug" component={Profile} />
+          <Route exact path="/blogs/:slug" component={BlogsByCategory} />
           <Route exact path="*" component={NotFound} />
         </Switch>
         <Footer />
