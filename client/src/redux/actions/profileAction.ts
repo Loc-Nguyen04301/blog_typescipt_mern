@@ -1,5 +1,6 @@
 import React from "react";
-import { patchAPI } from "./../../utils/FetchData";
+import { GET_OTHER_INFO, IGetOtherInfoType } from "./../types/profileType";
+import { getAPI, patchAPI } from "./../../utils/FetchData";
 import { ALERT, IAlertType } from "./../types/alertType";
 import { AUTH, IAuth, IAuthType } from "./../types/authType";
 import { Dispatch } from "redux";
@@ -73,6 +74,20 @@ export const resetPassword =
       );
       console.log(res);
       dispatch({ type: ALERT, payload: { success: res.data.message } });
+    } catch (error: any) {
+      dispatch({ type: ALERT, payload: { errors: error.message } });
+    }
+  };
+
+export const getOtherInfo =
+  (id: string) =>
+  async (dispatch: Dispatch<IAlertType | IGetOtherInfoType>) => {
+    try {
+      dispatch({ type: ALERT, payload: { loading: true } });
+      // Call API get Info by ID
+      const res = await getAPI(`user/${id}`);
+      console.log(res);
+      dispatch({ type: GET_OTHER_INFO, payload: res.data });
     } catch (error: any) {
       dispatch({ type: ALERT, payload: { errors: error.message } });
     }

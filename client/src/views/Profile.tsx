@@ -15,7 +15,7 @@ const Profile = () => {
   return (
     <div className="row my-3">
       <div className="col-md-5 mb-3">
-        {user && user._id === slug ? <UserInfo /> : <OtherInfo />}
+        {user && user._id === slug ? <UserInfo /> : <OtherInfo id={slug} />}
       </div>
 
       <div className="col-md-7">

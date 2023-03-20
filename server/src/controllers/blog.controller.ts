@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 import { IReqAuth } from "./../config/interface";
 import { Request, Response } from "express";
 import Blogs from "../models/blog.model";
-import { count } from "console";
 
 const Pagination = (req: IReqAuth) => {
   let page = Number(req.query.page) * 1 || 1;
+  // 1 page is {limit} blog
   let limit = Number(req.query.limit) * 1 || 4;
   let skip = (page - 1) * limit;
 
@@ -15,7 +15,7 @@ const Pagination = (req: IReqAuth) => {
 const blogController = {
   createBlog: async (req: IReqAuth, res: Response) => {
     if (!req.user)
-      return res.status(400).json({ msg: "Invalid Authentication." });
+      return res.status(400).json({ message: "Invalid Authentication." });
     try {
       const { title, content, description, thumbnail, category } = req.body;
       console.log(req.body);
@@ -160,6 +160,84 @@ const blogController = {
       }
 
       return res.json({ blogs, total });
+    } catch (err: any) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+
+  getBlogsByUser: async (req: Request, res: Response) => {
+    const { limit, skip } = Pagination(req);
+
+    try {
+      const Data = await Blogs.aggregate([
+        {
+          $facet: {
+            totalData: [
+              {
+                $match: {
+                  user: new mongoose.Types.ObjectId(req.params.user_id),
+                },
+              },
+              // User
+              {
+                $lookup: {
+                  from: "users",
+                  let: { user_id: "$user" },
+                  pipeline: [
+                    { $match: { $expr: { $eq: ["$_id", "$$user_id"] } } },
+                    { $project: { password: 0 } },
+                  ],
+                  as: "user",
+                },
+              },
+              // array -> object
+              { $unwind: "$user" },
+              // Sorting
+              { $sort: { createdAt: -1 } },
+              { $skip: skip },
+              { $limit: limit },
+            ],
+            totalCount: [
+              {
+                $match: {
+                  user: new mongoose.Types.ObjectId(req.params.user_id),
+                },
+              },
+              { $count: "count" },
+            ],
+          },
+        },
+        {
+          $project: {
+            count: { $arrayElemAt: ["$totalCount.count", 0] },
+            totalData: 1,
+          },
+        },
+      ]);
+
+      const blogs = Data[0].totalData;
+      const count = Data[0].count;
+
+      // Pagination
+      let total = 0;
+
+      if (count % limit === 0) {
+        total = count / limit;
+      } else {
+        total = Math.floor(count / limit) + 1;
+      }
+
+      res.json({ blogs, total });
+    } catch (err: any) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+
+  getBlogById: async (req: Request, res: Response) => {
+    try {
+      const blog = await Blogs.findOne({ _id: req.params.blog_id });
+      if (!blog) return res.status(400).json({ msg: "Blog does not exist." });
+      return res.json(blog);
     } catch (err: any) {
       return res.status(500).json({ message: err.message });
     }

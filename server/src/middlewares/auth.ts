@@ -1,5 +1,5 @@
 import { IReqAuth } from "./../config/interface";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
 import { IDecodedToken } from "../config/interface";
 import Users from "../models/user.model";

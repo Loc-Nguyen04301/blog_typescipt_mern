@@ -1,13 +1,14 @@
-import { GET_BLOGS_CATEGORY_ID } from "./../types/blogType";
+import { GET_BLOGS_CATEGORY_ID, GET_BLOGS_USER_ID } from "./../types/blogType";
 import { getAPI } from "./../../utils/FetchData";
 import { Dispatch } from "redux";
 import { imageUpload } from "../../utils/ImageUpload";
 import { ALERT, IAlertType } from "../types/alertType";
 import {
   GET_HOME_BLOGS,
-  IGetHomeBlogsType,
   IBlog,
+  IGetHomeBlogsType,
   IGetBlogsCategoryIdType,
+  IGetBlogsUserIdType,
 } from "../types/blogType";
 import { postAPI } from "../../utils/FetchData";
 
@@ -56,14 +57,37 @@ export const getHomeBlogs =
   };
 
 export const getBlogsByCategoryId =
-  (id: string) =>
+  (id: string, search: string) =>
   async (dispatch: Dispatch<IAlertType | IGetBlogsCategoryIdType>) => {
     try {
       dispatch({ type: ALERT, payload: { loading: true } });
-      
-      const res = await getAPI(`blog/blogs/${id}`);
+      const res = await getAPI(`blog/blogs/category/${id}/${search}`);
       console.log(res);
-      dispatch({ type: GET_BLOGS_CATEGORY_ID, payload: { ...res.data, id } });
+      dispatch({
+        type: GET_BLOGS_CATEGORY_ID,
+        payload: { ...res.data, id, search },
+      });
+
+      dispatch({ type: ALERT, payload: { loading: false } });
+    } catch (error: any) {
+      dispatch({
+        type: ALERT,
+        payload: { errors: error.response.data.message },
+      });
+    }
+  };
+
+export const getBlogsByUserId =
+  (id: string, search: string) =>
+  async (dispatch: Dispatch<IAlertType | IGetBlogsUserIdType>) => {
+    try {
+      dispatch({ type: ALERT, payload: { loading: true } });
+      const res = await getAPI(`blog/blogs/user/${id}/${search}`);
+      console.log(res);
+      dispatch({
+        type: GET_BLOGS_USER_ID,
+        payload: { ...res.data, id, search },
+      });
 
       dispatch({ type: ALERT, payload: { loading: false } });
     } catch (error: any) {

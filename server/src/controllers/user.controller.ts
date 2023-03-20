@@ -42,6 +42,15 @@ const userController = {
       return res.status(500).json({ message: error.message });
     }
   },
+
+  getUser: async (req: IReqAuth, res: Response) => {
+    try {
+      const user = await Users.findById(req.params.id).select("-password");
+      return res.json({ user });
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
+    }
+  },
 };
 
 export default userController;
