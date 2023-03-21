@@ -21,9 +21,9 @@ const commentController = {
 
       const newComment = new Comments({
         user: req.user._id,
-        content,
         blog_id,
         blog_user_id,
+        content,
       });
 
       await newComment.save();

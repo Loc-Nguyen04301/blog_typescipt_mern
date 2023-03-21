@@ -20,13 +20,12 @@ const DetailBlog: React.FC<IProps> = ({ blog }) => {
 
   const [showComments, setShowComments] = useState<IComment[]>([]);
   const [loading, setLoading] = useState(false);
-
   const handleComment = (body: string) => {
     if (!auth.user || !auth.access_token) return;
     const data = {
       user: auth.user,
       blog_id: blog._id as string,
-      blog_user_id: (blog.user as IUser)._id,
+      blog_user_id: blog.user as string,
       content: body,
       createdAt: new Date().toISOString(),
     };
@@ -92,10 +91,8 @@ const DetailBlog: React.FC<IProps> = ({ blog }) => {
       {loading ? (
         <Loading />
       ) : (
-        comment &&
-        comment.data.map((item, index) => (
-          <Comments key={item._id} comment={item} />
-        ))
+        showComments &&
+        showComments.map((item) => <Comments key={item._id} comment={item} />)
       )}
     </div>
   );
