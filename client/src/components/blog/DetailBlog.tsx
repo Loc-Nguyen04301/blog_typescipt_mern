@@ -1,33 +1,57 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { IBlog } from "../../redux/types/blogType";
-import { IUser, IComment } from "../../utils/TypeScript";
+import { IUser } from "../../utils/TypeScript";
+import { IComment } from "../../redux/types/commentType";
 import { RootStore } from "../../utils/TypeScript";
 
 import Comments from "../comment/Comments";
 import Input from "../comment/Input";
+import { createComment, getComments } from "../../redux/actions/commentAction";
+import Loading from "../Loading";
 interface IProps {
   blog: IBlog;
 }
 
 const DetailBlog: React.FC<IProps> = ({ blog }) => {
-  const { auth } = useSelector((state: RootStore) => state);
+  const { auth, comment } = useSelector((state: RootStore) => state);
   const dispatch = useDispatch();
 
   const [showComments, setShowComments] = useState<IComment[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const handleComment = (body: string) => {
     if (!auth.user || !auth.access_token) return;
     const data = {
-      content: body,
       user: auth.user,
       blog_id: blog._id as string,
       blog_user_id: (blog.user as IUser)._id,
+      content: body,
       createdAt: new Date().toISOString(),
     };
     setShowComments([...showComments, data]);
+    dispatch(createComment(data, auth.access_token));
   };
+
+  useEffect(() => {
+    if (comment.data.length === 0) return;
+    setShowComments(comment.data);
+  }, [comment.data]);
+
+  const fetchComments = useCallback(
+    async (id: string) => {
+      setLoading(true);
+      await dispatch(getComments(id));
+      setLoading(false);
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    if (!blog._id) return;
+    fetchComments(blog._id);
+  }, [blog._id]);
 
   return (
     <div>
@@ -56,6 +80,7 @@ const DetailBlog: React.FC<IProps> = ({ blog }) => {
 
       <hr className="my-1" />
       <h3 style={{ color: "#ff7a00" }}>✩ Comments ✩</h3>
+
       {auth.user ? (
         <Input callback={handleComment} />
       ) : (
@@ -64,9 +89,14 @@ const DetailBlog: React.FC<IProps> = ({ blog }) => {
         </h5>
       )}
 
-      {showComments?.map((comment, index) => (
-        <Comments key={index} comment={comment} />
-      ))}
+      {loading ? (
+        <Loading />
+      ) : (
+        comment &&
+        comment.data.map((item, index) => (
+          <Comments key={item._id} comment={item} />
+        ))
+      )}
     </div>
   );
 };

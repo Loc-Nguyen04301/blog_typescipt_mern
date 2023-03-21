@@ -1,6 +1,5 @@
 import React from "react";
-import { IComment } from "../../utils/TypeScript";
-
+import { IComment } from "../../redux/types/commentType";
 interface IProps {
   comment: IComment;
 }
