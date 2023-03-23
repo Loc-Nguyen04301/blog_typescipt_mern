@@ -13,7 +13,6 @@ const BlogsByCategory = () => {
   const { category, blogsCategory } = useSelector((state: RootStore) => state);
   const dispatch = useDispatch();
   const { slug } = useParams<IParams>();
-
   const [categoryId, setCategoryId] = useState("");
   const [blogs, setBlogs] = useState<IBlog[]>();
   const [total, setTotal] = useState(0);

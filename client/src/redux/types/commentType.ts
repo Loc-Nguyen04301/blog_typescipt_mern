@@ -31,4 +31,10 @@ export interface IGetComments {
   payload: ICommentState;
 }
 
-export type ICommentType = ICreateComment | IGetComments;
+export const REPLY_COMMENT = "REPLY_COMMENT";
+export interface IReplyComment {
+  type: typeof REPLY_COMMENT;
+  payload: IComment;
+}
+
+export type ICommentType = ICreateComment | IGetComments | IReplyComment;

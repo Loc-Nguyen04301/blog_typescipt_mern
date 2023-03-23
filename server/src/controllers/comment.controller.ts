@@ -45,6 +45,8 @@ const commentController = {
               {
                 $match: {
                   blog_id: new mongoose.Types.ObjectId(req.params.id),
+                  comment_root: { $exists: false },
+                  reply_user: { $exists: false },
                 },
               },
               {
@@ -56,6 +58,34 @@ const commentController = {
                 },
               },
               { $unwind: "$user" },
+              {
+                $lookup: {
+                  from: "comments",
+                  let: { cm_id: "$replyCM" },
+                  pipeline: [
+                    { $match: { $expr: { $in: ["$_id", "$$cm_id"] } } },
+                    {
+                      $lookup: {
+                        from: "users",
+                        localField: "user",
+                        foreignField: "_id",
+                        as: "user",
+                      },
+                    },
+                    { $unwind: "$user" },
+                    {
+                      $lookup: {
+                        from: "users",
+                        localField: "reply_user",
+                        foreignField: "_id",
+                        as: "reply_user",
+                      },
+                    },
+                    { $unwind: "$reply_user" },
+                  ],
+                  as: "replyCM",
+                },
+              },
               { $sort: { createdAt: -1 } },
               { $skip: skip },
               { $limit: limit },
@@ -64,6 +94,8 @@ const commentController = {
               {
                 $match: {
                   blog_id: new mongoose.Types.ObjectId(req.params.id),
+                  comment_root: { $exists: false },
+                  reply_user: { $exists: false },
                 },
               },
               { $count: "count" },
@@ -90,6 +122,35 @@ const commentController = {
       }
 
       return res.json({ comments, total });
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
+    }
+  },
+
+  replyComment: async (req: IReqAuth, res: Response) => {
+    if (!req.user)
+      return res.status(400).json({ message: "invalid Authentication." });
+    try {
+      const { blog_id, blog_user_id, content, reply_user, comment_root } =
+        req.body;
+
+      const newComment = new Comments({
+        user: req.user._id,
+        blog_id,
+        blog_user_id,
+        content,
+        reply_user: reply_user._id,
+        comment_root,
+      });
+
+      await Comments.findOneAndUpdate(
+        { _id: comment_root },
+        { $push: { replyCM: newComment._id } }
+      );
+
+      await newComment.save();
+
+      return res.json(newComment);
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }

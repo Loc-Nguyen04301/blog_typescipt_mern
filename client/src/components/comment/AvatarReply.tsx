@@ -14,13 +14,13 @@ const AvatarReply: React.FC<IProps> = ({ user, reply_user }) => {
 
       <div className="ms-1">
         <small>
-          <Link to={`/profile/${user._id}`} style={{ textDecoration: "none" }}>
+          <Link to={`/${user._id}`} style={{ textDecoration: "none" }}>
             {user.name}
           </Link>
         </small>
 
         <small className="reply-text">
-          <Link to={`/${reply_user?._id}`}>{reply_user?.name}</Link>
+          Reply to <Link to={`/${reply_user?._id}`}>{reply_user?.name}</Link>
         </small>
       </div>
     </div>

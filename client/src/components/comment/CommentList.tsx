@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "../../utils/TypeScript";
 import { IComment } from "../../redux/types/commentType";
 import Input from "./Input";
+
+import { replyComment } from "../../redux/actions/commentAction";
 interface IProps {
   comment: IComment;
   listReply: IComment[];
@@ -27,10 +29,12 @@ const CommentList: React.FC<IProps> = ({
       blog_user_id: comment.blog_user_id,
       content: body,
       reply_user: comment.user,
-      comment_root: comment._id,
+      comment_root: comment.comment_root || comment._id,
       createdAt: new Date().toISOString(),
     };
+    console.log(data);
     setListReply([...listReply, data]);
+    dispatch(replyComment(data, auth.access_token));
     setOnReply(true);
   };
 

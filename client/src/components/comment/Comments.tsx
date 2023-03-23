@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IComment } from "../../redux/types/commentType";
 import AvatarComment from "./AvatarComment";
 import CommentList from "./CommentList";
@@ -12,6 +12,11 @@ interface IProps {
 
 const Comments: React.FC<IProps> = ({ comment }) => {
   const [listReply, setListReply] = useState<IComment[]>([]);
+
+  useEffect(() => {
+    if (!comment.replyCM) return;
+    setListReply(comment.replyCM);
+  }, [comment.replyCM]);
 
   return (
     <div
@@ -36,6 +41,7 @@ const Comments: React.FC<IProps> = ({ comment }) => {
             }}
           >
             <AvatarReply user={comment.user} reply_user={comment.reply_user} />
+            
             <CommentList
               comment={comment}
               listReply={listReply}
