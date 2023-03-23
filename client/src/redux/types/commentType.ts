@@ -44,8 +44,16 @@ export interface IUpdateComment {
   payload: IComment;
 }
 
+export const DELETE_COMMENT = "DELETE_COMMENT";
+export const DELETE_REPLY = "DELETE_REPLY";
+export interface IDeleteComment {
+  type: typeof DELETE_COMMENT | typeof DELETE_REPLY;
+  payload: IComment;
+}
+
 export type ICommentType =
   | ICreateComment
   | IGetComments
   | IReplyComment
-  | IUpdateComment;
+  | IUpdateComment
+  | IDeleteComment;

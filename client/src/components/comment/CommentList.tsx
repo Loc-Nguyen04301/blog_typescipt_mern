@@ -4,7 +4,11 @@ import { RootStore } from "../../utils/TypeScript";
 import { IComment } from "../../redux/types/commentType";
 import Input from "./Input";
 
-import { replyComment, updateComment } from "../../redux/actions/commentAction";
+import {
+  replyComment,
+  updateComment,
+  deleteComment,
+} from "../../redux/actions/commentAction";
 interface IProps {
   comment: IComment;
   listReply: IComment[];
@@ -43,6 +47,11 @@ const CommentList: React.FC<IProps> = ({
     setOnReply((prev) => !prev);
   };
 
+  const handleDelete = (comment: IComment) => {
+    if (!auth.user || !auth.access_token) return;
+    dispatch(deleteComment(comment, auth.access_token));
+  };
+
   const handleEdit = (comment: IComment) => {
     setEdit(comment);
   };
@@ -60,7 +69,10 @@ const CommentList: React.FC<IProps> = ({
   const Nav = (comment: IComment) => {
     return (
       <div>
-        <i className="fas fa-trash-alt mx-2" />
+        <i
+          className="fas fa-trash-alt mx-2"
+          onClick={() => handleDelete(comment)}
+        />
         <i className="fas fa-edit me-2" onClick={() => handleEdit(comment)} />
       </div>
     );
@@ -90,13 +102,16 @@ const CommentList: React.FC<IProps> = ({
             )}
 
             <small className="d-flex">
-              <div style={{ cursor: "pointer" }}>
+              <div className="comment_nav">
                 {/* Xác định chủ comment có phải là user hiện tại hay ko, nếu có thì có thể Edit được comment */}
                 {comment.blog_user_id === auth.user?._id ? (
                   comment.user._id === auth.user._id ? (
                     Nav(comment)
                   ) : (
-                    <i className="fas fa-trash-alt mx-2" />
+                    <i
+                      className="fas fa-trash-alt mx-2"
+                      onClick={() => handleDelete(comment)}
+                    />
                   )
                 ) : (
                   comment.user._id === auth.user?._id && Nav(comment)
