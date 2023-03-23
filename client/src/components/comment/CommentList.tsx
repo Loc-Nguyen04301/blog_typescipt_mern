@@ -4,7 +4,7 @@ import { RootStore } from "../../utils/TypeScript";
 import { IComment } from "../../redux/types/commentType";
 import Input from "./Input";
 
-import { replyComment } from "../../redux/actions/commentAction";
+import { replyComment, updateComment } from "../../redux/actions/commentAction";
 interface IProps {
   comment: IComment;
   listReply: IComment[];
@@ -21,6 +21,8 @@ const CommentList: React.FC<IProps> = ({
   const { auth } = useSelector((state: RootStore) => state);
   const dispatch = useDispatch();
 
+  const [edit, setEdit] = useState<IComment>();
+
   const handleClickSendReply = (body: string) => {
     if (!auth.user || !auth.access_token) return;
     const data = {
@@ -32,33 +34,79 @@ const CommentList: React.FC<IProps> = ({
       comment_root: comment.comment_root || comment._id,
       createdAt: new Date().toISOString(),
     };
-    console.log(data);
     setListReply([...listReply, data]);
     dispatch(replyComment(data, auth.access_token));
-    setOnReply(true);
+    setOnReply(false);
   };
 
   const handleToOpenReplyModal = () => {
     setOnReply((prev) => !prev);
   };
 
+  const handleEdit = (comment: IComment) => {
+    setEdit(comment);
+  };
+
+  const handleUpdate = (body: string) => {
+    if (!auth.user || !auth.access_token || !edit) return;
+
+    if (body === edit.content) return setEdit(undefined);
+
+    const newComment = { ...edit, content: body };
+    dispatch(updateComment(newComment, auth.access_token));
+    setEdit(undefined);
+  };
+
+  const Nav = (comment: IComment) => {
+    return (
+      <div>
+        <i className="fas fa-trash-alt mx-2" />
+        <i className="fas fa-edit me-2" onClick={() => handleEdit(comment)} />
+      </div>
+    );
+  };
+
   return (
     <div className="w-100">
-      <div className="comment_box">
-        <div
-          className="p-2"
-          dangerouslySetInnerHTML={{
-            __html: comment.content,
-          }}
-        />
+      {edit ? (
+        <Input callback={handleUpdate} edit={edit} setEdit={setEdit} />
+      ) : (
+        <div className="comment_box">
+          <div
+            className="p-2"
+            dangerouslySetInnerHTML={{
+              __html: comment.content,
+            }}
+          />
 
-        <div className="d-flex justify-content-between p-2">
-          <small style={{ cursor: "pointer" }} onClick={handleToOpenReplyModal}>
-            {onReply ? "- Cancel -" : "- Reply -"}
-          </small>
-          <small>{new Date(comment.createdAt).toLocaleString()}</small>
+          <div className="d-flex justify-content-between p-2">
+            {auth.user && (
+              <small
+                style={{ cursor: "pointer" }}
+                onClick={handleToOpenReplyModal}
+              >
+                {onReply ? "- Cancel -" : "- Reply -"}
+              </small>
+            )}
+
+            <small className="d-flex">
+              <div style={{ cursor: "pointer" }}>
+                {/* Xác định chủ comment có phải là user hiện tại hay ko, nếu có thì có thể Edit được comment */}
+                {comment.blog_user_id === auth.user?._id ? (
+                  comment.user._id === auth.user._id ? (
+                    Nav(comment)
+                  ) : (
+                    <i className="fas fa-trash-alt mx-2" />
+                  )
+                ) : (
+                  comment.user._id === auth.user?._id && Nav(comment)
+                )}
+              </div>
+              <div>{new Date(comment.createdAt).toLocaleString()}</div>
+            </small>
+          </div>
         </div>
-      </div>
+      )}
 
       {onReply && <Input callback={handleClickSendReply} />}
 

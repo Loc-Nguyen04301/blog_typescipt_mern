@@ -1,4 +1,9 @@
-import { GET_COMMENTS, REPLY_COMMENT } from "./../types/commentType";
+import {
+  GET_COMMENTS,
+  REPLY_COMMENT,
+  UPDATE_COMMENT,
+  UPDATE_REPLY,
+} from "./../types/commentType";
 import { postAPI, getAPI } from "./../../utils/FetchData";
 import { ALERT, IAlertType } from "./../types/alertType";
 import { Dispatch } from "redux";
@@ -23,10 +28,13 @@ export const createComment =
   };
 
 export const getComments =
-  (id: string) => async (dispatch: Dispatch<IAlertType | ICommentType>) => {
+  (id: string, num: number) =>
+  async (dispatch: Dispatch<IAlertType | ICommentType>) => {
     try {
-      let limit = 8;
-      const res = await getAPI(`comment/blog/${id}?limit=${limit}`);
+      let limit = 4;
+      const res = await getAPI(
+        `comment/blog/${id}?page=${num}&&limit=${limit}`
+      );
       console.log(res);
       dispatch({
         type: GET_COMMENTS,
@@ -55,6 +63,25 @@ export const replyComment =
           reply_user: data.reply_user,
         },
       });
+    } catch (error: any) {
+      dispatch({
+        type: ALERT,
+        payload: { errors: error.response.data.message },
+      });
+    }
+  };
+
+export const updateComment =
+  (data: IComment, token: string) =>
+  async (dispatch: Dispatch<IAlertType | ICommentType>) => {
+    try {
+      console.log(data);
+      dispatch({
+        type: data.comment_root ? UPDATE_REPLY : UPDATE_COMMENT,
+        payload: data,
+      });
+
+      // const res = await postAPI('comment', data, token)
     } catch (error: any) {
       dispatch({
         type: ALERT,

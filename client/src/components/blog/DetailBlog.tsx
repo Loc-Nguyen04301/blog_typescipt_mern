@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { IBlog } from "../../redux/types/blogType";
-import { IUser } from "../../utils/TypeScript";
 import { IComment } from "../../redux/types/commentType";
 import { RootStore } from "../../utils/TypeScript";
 
@@ -10,6 +9,7 @@ import Comments from "../comment/Comments";
 import Input from "../comment/Input";
 import { createComment, getComments } from "../../redux/actions/commentAction";
 import Loading from "../Loading";
+import Pagination from "../Pagination";
 interface IProps {
   blog: IBlog;
 }
@@ -20,8 +20,12 @@ const DetailBlog: React.FC<IProps> = ({ blog }) => {
 
   const [showComments, setShowComments] = useState<IComment[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const history = useHistory();
+
   const handleComment = (body: string) => {
     if (!auth.user || !auth.access_token) return;
+
     const data = {
       user: auth.user,
       blog_id: blog._id as string,
@@ -29,19 +33,19 @@ const DetailBlog: React.FC<IProps> = ({ blog }) => {
       content: body,
       createdAt: new Date().toISOString(),
     };
+
     setShowComments([...showComments, data]);
     dispatch(createComment(data, auth.access_token));
   };
 
   useEffect(() => {
-    if (comment.data.length === 0) return;
     setShowComments(comment.data);
   }, [comment.data]);
 
   const fetchComments = useCallback(
-    async (id: string) => {
+    async (id: string, num) => {
       setLoading(true);
-      await dispatch(getComments(id));
+      await dispatch(getComments(id, num));
       setLoading(false);
     },
     [dispatch]
@@ -49,8 +53,14 @@ const DetailBlog: React.FC<IProps> = ({ blog }) => {
 
   useEffect(() => {
     if (!blog._id) return;
-    fetchComments(blog._id);
-  }, [blog._id]);
+    const num = history.location.search.slice(6) || 1;
+    fetchComments(blog._id, num);
+  }, [blog._id, history, fetchComments]);
+
+  const handlePagination = (num: number) => {
+    if (!blog._id) return;
+    fetchComments(blog._id, num);
+  };
 
   return (
     <div>
@@ -93,6 +103,10 @@ const DetailBlog: React.FC<IProps> = ({ blog }) => {
       ) : (
         showComments &&
         showComments.map((item) => <Comments key={item._id} comment={item} />)
+      )}
+
+      {comment.total > 1 && (
+        <Pagination total={comment.total} callback={handlePagination} />
       )}
     </div>
   );

@@ -12,6 +12,9 @@ interface IProps {
 
 const Comments: React.FC<IProps> = ({ comment }) => {
   const [listReply, setListReply] = useState<IComment[]>([]);
+  const [next, setNext] = useState(2);
+  const initialRepComment = 2;
+  const moreComment = 5;
 
   useEffect(() => {
     if (!comment.replyCM) return;
@@ -32,7 +35,7 @@ const Comments: React.FC<IProps> = ({ comment }) => {
         listReply={listReply}
         setListReply={setListReply}
       >
-        {listReply.map((comment, index) => (
+        {listReply.slice(0, next).map((comment, index) => (
           <div
             key={index}
             style={{
@@ -41,7 +44,7 @@ const Comments: React.FC<IProps> = ({ comment }) => {
             }}
           >
             <AvatarReply user={comment.user} reply_user={comment.reply_user} />
-            
+
             <CommentList
               comment={comment}
               listReply={listReply}
@@ -49,6 +52,34 @@ const Comments: React.FC<IProps> = ({ comment }) => {
             />
           </div>
         ))}
+
+        <div>
+          {listReply.length - next > 0 ? (
+            <small
+              style={{
+                color: "crimson",
+                textDecorationLine: "underline",
+                cursor: "pointer",
+              }}
+              onClick={() => setNext((prev) => prev + moreComment)}
+            >
+              See more comments...
+            </small>
+          ) : (
+            listReply.length > initialRepComment && (
+              <small
+                style={{
+                  color: "teal",
+                  textDecorationLine: "underline",
+                  cursor: "pointer",
+                }}
+                onClick={() => setNext(initialRepComment)}
+              >
+                Hide comments ...
+              </small>
+            )
+          )}
+        </div>
       </CommentList>
     </div>
   );

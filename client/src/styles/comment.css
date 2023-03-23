@@ -28,20 +28,24 @@
   margin-bottom: 0.75rem;
 }
 
-.avatar_reply{
+.avatar_reply {
   display: flex;
   align-items: center;
   margin-bottom: 0.25rem;
 }
 
-.avatar_reply img{
+.avatar_reply img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
 }
-.avatar_reply .reply-text{
+.avatar_reply .reply-text {
   display: block;
   opacity: 0.5;
   font-size: 11px;
+}
+
+small:hover {
+  font-weight: 50g0;
 }

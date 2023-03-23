@@ -235,7 +235,10 @@ const blogController = {
 
   getBlogById: async (req: Request, res: Response) => {
     try {
-      const blog = await Blogs.findOne({ _id: req.params.blog_id });
+      const blog = await Blogs.findOne({ _id: req.params.blog_id }).populate(
+        "user",
+        "-password"
+      );
       if (!blog) return res.status(400).json({ msg: "Blog does not exist." });
       return res.json(blog);
     } catch (err: any) {

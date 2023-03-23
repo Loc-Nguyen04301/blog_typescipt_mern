@@ -37,4 +37,15 @@ export interface IReplyComment {
   payload: IComment;
 }
 
-export type ICommentType = ICreateComment | IGetComments | IReplyComment;
+export const UPDATE_COMMENT = "UPDATE_COMMENT";
+export const UPDATE_REPLY = "UPDATE_REPLY";
+export interface IUpdateComment {
+  type: typeof UPDATE_COMMENT | typeof UPDATE_REPLY;
+  payload: IComment;
+}
+
+export type ICommentType =
+  | ICreateComment
+  | IGetComments
+  | IReplyComment
+  | IUpdateComment;
