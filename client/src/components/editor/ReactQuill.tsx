@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { ALERT } from "../../redux/types/alertType";
 import { checkImage, imageUpload } from "../../utils/ImageUpload";
 interface IProps {
+  body: string;
   setBody: (value: string) => void;
 }
 
@@ -26,7 +27,7 @@ let container = [
   ["clean", "link", "image", "video"],
 ];
 
-const Quill: React.FC<IProps> = ({ setBody }) => {
+const Quill: React.FC<IProps> = ({ body, setBody }) => {
   const dispatch = useDispatch();
 
   const quillRef = useRef<ReactQuill>(null);
@@ -77,6 +78,7 @@ const Quill: React.FC<IProps> = ({ setBody }) => {
     let toolbar = quill.getEditor().getModule("toolbar");
     toolbar.addHandler("image", handleChangeImage);
   }, [handleChangeImage]);
+
   return (
     <ReactQuill
       theme="snow"
@@ -84,6 +86,7 @@ const Quill: React.FC<IProps> = ({ setBody }) => {
       placeholder="Write somethings..."
       onChange={handleChange}
       ref={quillRef}
+      value={body}
     />
   );
 };

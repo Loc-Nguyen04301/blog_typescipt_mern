@@ -4,6 +4,8 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import { Server, Socket } from "socket.io";
+import { createServer } from "http";
 
 var corsOptions = {
   origin: process.env.CLIENT_URL,
@@ -22,6 +24,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
 
+// Socket.io
+const httpServer = createServer(app);
+const io = new Server(httpServer);
+
+import { SocketServer } from "./config/socket";
+io.on("connection", (socket: Socket) => {
+  SocketServer(socket);
+});
+
 //Init Routes
 import initRoutes from "./routes";
 initRoutes(app);
@@ -30,6 +41,6 @@ import "./config/database";
 
 // server listening
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log("Server is running on port", PORT);
 });

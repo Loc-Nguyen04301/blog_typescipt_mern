@@ -12,6 +12,7 @@ import Login from "./views/Login";
 import Profile from "./views/Profile";
 import CreateBlog from "./views/CreateBlog";
 import Category from "./views/Category";
+import UpdateBlog from "./views/UpdateBlog";
 
 import { refreshToken } from "./redux/actions/authAction";
 import { getCategories } from "./redux/actions/categoryAction";
@@ -19,6 +20,9 @@ import { getHomeBlogs } from "./redux/actions/blogAction";
 import { useDispatch } from "react-redux";
 import BlogsByCategory from "./views/BlogsByCategory";
 import BlogDetail from "./views/BlogDetail";
+
+//Socket.io
+import { io } from "socket.io-client";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -28,6 +32,14 @@ const App = () => {
     dispatch(getCategories());
     dispatch(getHomeBlogs());
   }, [dispatch]);
+
+  // useEffect(() => {
+  //   const socket = io();
+  //   dispatch({ type: "SOCKET", payload: socket });
+  //   return () => {
+  //     socket.close();
+  //   };
+  // }, [dispatch]);
 
   return (
     <div className="container">
@@ -43,6 +55,7 @@ const App = () => {
           <Route exact path="/create_blog" component={CreateBlog} />
           <Route exact path="/category" component={Category} />
           <Route exact path="/:slug" component={Profile} />
+          <Route exact path="/update_blog/:slug" component={UpdateBlog} />
           <Route exact path="*" component={NotFound} />
         </Switch>
         <Footer />

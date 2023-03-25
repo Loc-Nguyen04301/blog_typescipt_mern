@@ -8,9 +8,14 @@ import CardHoriz from "../components/card/CardHoriz";
 import ReactQuill from "../components/editor/ReactQuill";
 import { validCreateBlog } from "../utils/Valid";
 import { ALERT } from "../redux/types/alertType";
-import { createBlog } from "../redux/actions/blogAction";
+import { createBlog, updateBlog } from "../redux/actions/blogAction";
+import Loading from "../components/Loading";
+import { getAPI } from "../utils/FetchData";
+interface IProps {
+  blog_id?: string;
+}
 
-const CreateBlog = () => {
+const CreateBlog: React.FC<IProps> = ({ blog_id }) => {
   const [blog, setBlog] = useState<IBlog>({
     user: "",
     title: "",
@@ -21,11 +26,12 @@ const CreateBlog = () => {
     createdAt: new Date().toISOString(),
   });
   const [body, setBody] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const divRef = useRef<HTMLDivElement>(null);
   const [content, setContent] = useState("");
 
-  const { auth, category } = useSelector((state: RootStore) => state);
+  const { auth } = useSelector((state: RootStore) => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,6 +43,21 @@ const CreateBlog = () => {
     setContent(text);
   }, [body]);
 
+  useEffect(() => {
+    if (!blog_id) return;
+    setLoading(true);
+    getAPI(`blog/blog/${blog_id}`)
+      .then((res) => {
+        setBlog(res.data);
+        setBody(res.data.content);
+        setContent(res.data.content);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  }, [blog_id]);
   const handleSubmit = () => {
     if (!auth.access_token) return;
     // check Validate Blog
@@ -45,16 +66,21 @@ const CreateBlog = () => {
       return dispatch({ type: ALERT, payload: { errors: check.errorMessage } });
 
     let newData = { ...blog, content: body };
-
-    dispatch(createBlog(newData, auth.access_token));
+    if (blog_id) {
+      dispatch(updateBlog(newData, auth.access_token));
+    } else {
+      dispatch(createBlog(newData, auth.access_token));
+    }
   };
 
   if (!auth.access_token) return <NotFound />;
+
+  if (loading) return <Loading />;
   return (
     <div className="my-4 create_blog">
       <div className="row mt-4">
         <div className="col-md-6">
-          <h5>Create</h5>
+          <h5> {blog_id ? "Update" : "Create"}</h5>
           <CreateForm blog={blog} setBlog={setBlog} />
         </div>
 
@@ -64,14 +90,13 @@ const CreateBlog = () => {
         </div>
       </div>
 
-      <ReactQuill setBody={setBody} />
+      <ReactQuill body={body} setBody={setBody} />
 
       <div
         ref={divRef}
         dangerouslySetInnerHTML={{
           __html: body,
         }}
-        // style={{ display: "none" }}
       />
 
       <small>{content.length}</small>
@@ -79,7 +104,7 @@ const CreateBlog = () => {
         className="btn btn-dark mt-3 d-block mx-auto"
         onClick={handleSubmit}
       >
-        Create Post
+        {blog_id ? "Update Post" : "Create Post"}
       </button>
     </div>
   );

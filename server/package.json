@@ -22,6 +22,7 @@
     "mongoose": "^6.9.2",
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.1",
+    "socket.io": "^4.2.0",
     "twilio": "^4.7.2"
   },
   "devDependencies": {
