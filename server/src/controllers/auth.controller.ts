@@ -1,29 +1,20 @@
 import {
   generateAccessToken,
   generateRefreshToken,
+  generateActiveToken,
 } from "./../config/generateToken";
 import { Request, Response } from "express";
 import Users from "../models/user.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { generateActiveToken } from "../config/generateToken";
-
 import { validateEmail, validPhone } from "../middlewares/valid";
 import sendMail from "../config/sendMail";
 import { sendSMS, smsOTP, smsVerify } from "../config/sendSMS";
-import {
-  IDecodedToken,
-  INewUser,
-  IUser,
-} from "../config/interface";
+import { IDecodedToken, INewUser, IUser } from "../config/interface";
 
 const saltRound = 10;
 
-const loginUser = async (
-  user: IUser,
-  password: string,
-  res: Response
-) => {
+const loginUser = async (user: IUser, password: string, res: Response) => {
   //check Password
   const isMatchingPassword = await bcrypt.compare(password, user.password);
   if (!isMatchingPassword) {

@@ -28,7 +28,9 @@ const auth = async (req: IReqAuth, res: Response, next: NextFunction) => {
 
     next();
   } catch (error: any) {
-    return res.status(500).json({ message: error.message });
+    return res
+      .status(500)
+      .json({ message: "JWT access token : " + error.message });
   }
 };
 

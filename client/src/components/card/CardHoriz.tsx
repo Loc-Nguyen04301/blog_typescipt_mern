@@ -1,10 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { IBlog } from "../../redux/types/blogType";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootStore } from "../../utils/TypeScript";
 import { IUser } from "../../utils/TypeScript";
-import { deleteBlog } from "../../redux/actions/blogAction";
 
 interface IProps {
   blog: IBlog;
@@ -12,15 +11,6 @@ interface IProps {
 
 const CardHoriz: React.FC<IProps> = ({ blog }) => {
   const { auth } = useSelector((state: RootStore) => state);
-
-  const dispatch = useDispatch();
-
-  const handleDelete = () => {
-    if (!auth.user || !auth.access_token) return;
-    if (window.confirm("Do you want to delete this post?")) {
-      dispatch(deleteBlog(blog, auth.access_token));
-    }
-  };
 
   return (
     <div className="card mb-3" style={{ minWidth: "280px" }}>
@@ -69,25 +59,17 @@ const CardHoriz: React.FC<IProps> = ({ blog }) => {
 
             <p className="card-text">{blog.description}</p>
 
-            <div className="card-text d-flex justify-content-between   align-items-center">
+            <p className="card-text d-flex justify-content-between">
               {(blog.user as IUser)._id === auth.user?._id && (
-                <div>
-                  <Link to={`/update_blog/${blog._id}`}>
-                    <i className="fas fa-edit" title="edit" />
-                  </Link>
-
-                  <i
-                    className="fas fa-trash text-danger mx-3"
-                    title="edit"
-                    onClick={handleDelete}
-                  />
-                </div>
+                <small>
+                  <Link to={`/update_blog/${blog._id}`}>Update</Link>
+                </small>
               )}
 
               <small className="text-muted">
                 {new Date(blog.createdAt).toLocaleString()}
               </small>
-            </div>
+            </p>
           </div>
         </div>
       </div>
