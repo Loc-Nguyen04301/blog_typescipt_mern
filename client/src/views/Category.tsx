@@ -25,9 +25,10 @@ const Category = () => {
     setEdit(item);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: string) => {
     if (!auth.access_token) return;
-    dispatch(deleteCategory(id, auth.access_token));
+    if (window.confirm("Are you sure you want to delete"))
+      dispatch(deleteCategory(id, auth.access_token));
   };
 
   const handleSubmit = (e: FormSubmit) => {
@@ -50,7 +51,6 @@ const Category = () => {
       setName(edit.name);
     }
   }, [edit]);
-
 
   if (auth.user && auth.user.role !== "admin") return <NotFound />;
   return (

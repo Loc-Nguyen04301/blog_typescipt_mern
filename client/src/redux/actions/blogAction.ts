@@ -1,14 +1,17 @@
-import { GET_BLOGS_CATEGORY_ID, GET_BLOGS_USER_ID } from "./../types/blogType";
-import { getAPI, putAPI } from "./../../utils/FetchData";
+import { deleteAPI, getAPI, putAPI } from "./../../utils/FetchData";
 import { Dispatch } from "redux";
 import { imageUpload } from "../../utils/ImageUpload";
 import { ALERT, IAlertType } from "../types/alertType";
 import {
-  GET_HOME_BLOGS,
   IBlog,
+  GET_HOME_BLOGS,
+  GET_BLOGS_CATEGORY_ID,
+  GET_BLOGS_USER_ID,
+  DELETE_BLOG_USER_ID,
   IGetHomeBlogsType,
   IGetBlogsCategoryIdType,
   IGetBlogsUserIdType,
+  IDeleteBlogUserType,
 } from "../types/blogType";
 import { postAPI } from "../../utils/FetchData";
 
@@ -113,10 +116,31 @@ export const updateBlog =
 
       const newBlog = { ...blog, thumbnail: url };
       console.log(newBlog);
-      // Call API update Blog
-      const res = putAPI(`blog/blog/${blog._id}`, newBlog, token);
+      // Call API Update Blog
+      const res = await putAPI(`blog/blog/${blog._id}`, newBlog, token);
       console.log(res);
-      dispatch({ type: ALERT, payload: { loading: false } });
+      dispatch({ type: ALERT, payload: { loading: res.data.message } });
+    } catch (error: any) {
+      dispatch({
+        type: ALERT,
+        payload: { errors: error.response.data.message },
+      });
+    }
+  };
+
+export const deleteBlog =
+  (blog: IBlog, token: string) =>
+  async (dispatch: Dispatch<IAlertType | IDeleteBlogUserType>) => {
+    let url;
+    try {
+      dispatch({
+        type: DELETE_BLOG_USER_ID,
+        payload: blog,
+      });
+      // Call API Delete Blog
+      const res = await deleteAPI(`blog/blog/${blog._id}`, token);
+      console.log(res);
+      dispatch({ type: ALERT, payload: { success: res.data.message } });
     } catch (error: any) {
       dispatch({
         type: ALERT,

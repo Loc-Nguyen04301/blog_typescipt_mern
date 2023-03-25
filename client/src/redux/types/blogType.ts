@@ -13,6 +13,7 @@ export interface IBlog {
 export const GET_HOME_BLOGS = "GET_HOME_BLOGS";
 export const GET_BLOGS_CATEGORY_ID = "GET_BLOGS_CATEGORY_ID";
 export const GET_BLOGS_USER_ID = "GET_BLOGS_USER_ID";
+export const DELETE_BLOG_USER_ID = "DELETE_BLOG_USER_ID";
 
 export interface IHomeBlogs {
   _id: string;
@@ -48,4 +49,9 @@ export interface IBlogsUser {
 export interface IGetBlogsUserIdType {
   type: typeof GET_BLOGS_USER_ID;
   payload: IBlogsUser;
+}
+
+export interface IDeleteBlogUserType {
+  type: typeof DELETE_BLOG_USER_ID;
+  payload: IBlog;
 }
