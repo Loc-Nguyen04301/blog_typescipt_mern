@@ -7,8 +7,8 @@ router.post("/", auth, blogController.createBlog);
 router.get("/home/blogs", blogController.getHomeBlogs);
 router.get("/blogs/category/:category_id", blogController.getBlogsByCategory);
 router.get("/blogs/user/:user_id", blogController.getBlogsByUser);
-router.get("/blog/:blog_id", blogController.getBlogById);
-router.put("/blog/:blog_id", auth, blogController.updateBlogById);
-router.delete("/blog/:blog_id", auth, blogController.deleteBlogById);
-
+router.get("/:blog_id", blogController.getBlogById);
+router.put("/:blog_id", auth, blogController.updateBlogById);
+router.delete("/:blog_id", auth, blogController.deleteBlogById);
+router.get("/search/blogs", blogController.searchBlogs);
 export default router;
