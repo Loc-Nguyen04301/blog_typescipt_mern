@@ -21,3 +21,8 @@ code {
   transform: translateY(-3px);
   border-radius: 50%;
 }
+
+.dropdown-menu[data-bs-popper] {
+  left: auto;
+  right: 0;
+}
