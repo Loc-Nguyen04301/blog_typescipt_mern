@@ -291,6 +291,19 @@ const blogController = {
       return res.status(500).json({ message: err.message });
     }
   },
+
+  searchBlogs: async (req: Request, res: Response) => {
+    try {
+      const { title } = req.query;
+      if (!title) return res.json([]);
+      const searchBlogs = await Blogs.find({
+        title: { $regex: ".*" + `${title}` + ".*" },
+      });
+      return res.json(searchBlogs);
+    } catch (err: any) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
 };
 
 export default blogController;
