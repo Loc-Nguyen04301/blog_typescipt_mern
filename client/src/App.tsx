@@ -42,25 +42,25 @@ const App = () => {
   // }, [dispatch]);
 
   return (
-    <div className="container">
-      <Router>
-        <Alert />
-        <Header />
+    <Router>
+      <Alert />
+      <Header />
+      <div className="container">
         <Switch>
-          <Route exact path="/blogs/:slug" component={BlogsByCategory} />
-          <Route exact path="/blog/:slug" component={BlogDetail} />
           <Route exact path="/" component={Home} />
+          <Route exact path="/:slug" component={Profile} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/create_blog" component={CreateBlog} />
           <Route exact path="/category" component={Category} />
-          <Route exact path="/:slug" component={Profile} />
+          <Route exact path="/blogs/:slug" component={BlogsByCategory} />
+          <Route exact path="/blog/:slug" component={BlogDetail} />
           <Route exact path="/update_blog/:slug" component={UpdateBlog} />
           <Route exact path="*" component={NotFound} />
         </Switch>
-        <Footer />
-      </Router>
-    </div>
+      </div>
+      <Footer />
+    </Router>
   );
 };
 

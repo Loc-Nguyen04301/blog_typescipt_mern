@@ -118,7 +118,7 @@ export const updateBlog =
       // Call API Update Blog
       const res = await putAPI(`blog/${blog._id}`, newBlog, token);
       console.log(res);
-      dispatch({ type: ALERT, payload: { loading: res.data.message } });
+      dispatch({ type: ALERT, payload: { success: res.data.message } });
     } catch (error: any) {
       dispatch({
         type: ALERT,
