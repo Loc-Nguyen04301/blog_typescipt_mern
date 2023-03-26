@@ -19,7 +19,7 @@ const BlogDetail = () => {
 
     setLoading(true);
 
-    getAPI(`blog/blog/${blogId}`)
+    getAPI(`blog/${blogId}`)
       .then((res) => {
         setBlog(res.data);
         setLoading(false);

@@ -117,7 +117,7 @@ export const updateBlog =
       const newBlog = { ...blog, thumbnail: url };
       console.log(newBlog);
       // Call API Update Blog
-      const res = await putAPI(`blog/blog/${blog._id}`, newBlog, token);
+      const res = await putAPI(`blog/${blog._id}`, newBlog, token);
       console.log(res);
       dispatch({ type: ALERT, payload: { loading: res.data.message } });
     } catch (error: any) {
@@ -131,14 +131,13 @@ export const updateBlog =
 export const deleteBlog =
   (blog: IBlog, token: string) =>
   async (dispatch: Dispatch<IAlertType | IDeleteBlogUserType>) => {
-    let url;
     try {
       dispatch({
         type: DELETE_BLOG_USER_ID,
         payload: blog,
       });
       // Call API Delete Blog
-      const res = await deleteAPI(`blog/blog/${blog._id}`, token);
+      const res = await deleteAPI(`blog/${blog._id}`, token);
       console.log(res);
       dispatch({ type: ALERT, payload: { success: res.data.message } });
     } catch (error: any) {

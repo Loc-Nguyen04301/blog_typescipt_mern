@@ -16,7 +16,7 @@ interface IProps {
 }
 
 const CreateBlog: React.FC<IProps> = ({ blog_id }) => {
-  const [blog, setBlog] = useState<IBlog>({
+  const initialBlog = {
     user: "",
     title: "",
     content: "",
@@ -24,7 +24,8 @@ const CreateBlog: React.FC<IProps> = ({ blog_id }) => {
     thumbnail: "",
     category: "",
     createdAt: new Date().toISOString(),
-  });
+  };
+  const [blog, setBlog] = useState<IBlog>(initialBlog);
   const [body, setBody] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -46,7 +47,7 @@ const CreateBlog: React.FC<IProps> = ({ blog_id }) => {
   useEffect(() => {
     if (!blog_id) return;
     setLoading(true);
-    getAPI(`blog/blog/${blog_id}`)
+    getAPI(`blog/${blog_id}`)
       .then((res) => {
         setBlog(res.data);
         setBody(res.data.content);
@@ -57,7 +58,14 @@ const CreateBlog: React.FC<IProps> = ({ blog_id }) => {
         console.log(err);
         setLoading(false);
       });
+
+    return () => {
+      setBlog(initialBlog);
+      setBody("");
+      setContent("");
+    };
   }, [blog_id]);
+
   const handleSubmit = () => {
     if (!auth.access_token) return;
     // check Validate Blog

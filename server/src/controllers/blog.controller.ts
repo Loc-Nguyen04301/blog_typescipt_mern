@@ -260,7 +260,37 @@ const blogController = {
       if (!blog)
         return res.status(400).json({ message: "Can't update this Blog." });
 
-      return res.json({ message: "Update Success!", blog });
+      return res.json({ message: "Update Success!" });
+    } catch (err: any) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+
+  deleteBlogById: async (req: IReqAuth, res: Response) => {
+    if (!req.user)
+      return res.status(400).json({ message: "Invalid Authentication." });
+
+    try {
+      const blog = await Blogs.findOneAndDelete({
+        _id: req.params.blog_id,
+      });
+      if (!blog)
+        return res.status(400).json({ message: "Can't delete this Blog." });
+
+      return res.json({ message: "Delete Success!" });
+    } catch (err: any) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+
+  searchBlogs: async (req: Request, res: Response) => {
+    try {
+      const { title } = req.query;
+      if (!title) return res.json([]);
+      const searchBlogs = await Blogs.find({
+        title: { $regex: ".*" + `${title}` + ".*" },
+      });
+      return res.json(searchBlogs);
     } catch (err: any) {
       return res.status(500).json({ message: err.message });
     }
