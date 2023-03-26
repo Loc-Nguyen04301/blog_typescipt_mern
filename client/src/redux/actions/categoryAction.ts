@@ -67,9 +67,9 @@ export const deleteCategory =
   (id: string, token: string) =>
   async (dispatch: Dispatch<IAlertType | ICategoryType>) => {
     try {
-      dispatch({ type: DELETE_CATEGORY, payload: id });
       const res = await deleteAPI(`category/${id}`, token);
       console.log(res);
+      dispatch({ type: DELETE_CATEGORY, payload: id });
     } catch (error: any) {
       dispatch({
         type: ALERT,
