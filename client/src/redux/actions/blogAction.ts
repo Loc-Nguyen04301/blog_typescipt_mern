@@ -137,7 +137,7 @@ export const deleteBlog =
         payload: blog,
       });
       // Call API Delete Blog
-      const res = await deleteAPI(`blog/blog/${blog._id}`, token);
+      const res = await deleteAPI(`blog/${blog._id}`, token);
       console.log(res);
       dispatch({ type: ALERT, payload: { success: res.data.message } });
     } catch (error: any) {

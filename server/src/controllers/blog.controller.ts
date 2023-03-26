@@ -273,12 +273,9 @@ const blogController = {
 
     try {
       // Delete Blog
-      const blog = await Blogs.findOneAndDelete(
-        {
-          _id: req.params.blog_id,
-        },
-        req.body
-      );
+      const blog = await Blogs.findOneAndDelete({
+        _id: req.params.blog_id,
+      });
 
       if (!blog)
         return res.status(400).json({ message: "Can't Delete This Blog." });
