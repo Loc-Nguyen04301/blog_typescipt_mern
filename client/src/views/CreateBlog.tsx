@@ -84,6 +84,7 @@ const CreateBlog: React.FC<IProps> = ({ blog_id }) => {
   if (!auth.access_token) return <NotFound />;
 
   if (loading) return <Loading />;
+
   return (
     <div className="my-4 create_blog">
       <div className="row mt-4">
