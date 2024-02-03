@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const CardHoriz: React.FC<IProps> = ({ blog }) => {
-  const { auth } = useSelector((state: RootStore) => state);
+  const auth = useSelector((state: RootStore) => state.auth);
 
   const dispatch = useDispatch();
 

@@ -15,7 +15,8 @@ interface IProps {
 }
 
 const DetailBlog: React.FC<IProps> = ({ blog }) => {
-  const { auth, comment } = useSelector((state: RootStore) => state);
+  const auth = useSelector((state: RootStore) => state.auth);
+  const comment = useSelector((state: RootStore) => state.comment);
   const dispatch = useDispatch();
 
   const [showComments, setShowComments] = useState<IComment[]>([]);

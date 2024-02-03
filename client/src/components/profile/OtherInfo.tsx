@@ -10,7 +10,7 @@ interface IProps {
 
 const OtherInfo: React.FC<IProps> = ({ id }) => {
   const [other, setOther] = useState<IUser>();
-  const { otherInfo } = useSelector((state: RootStore) => state);
+  const otherInfo = useSelector((state: RootStore) => state.otherInfo);
   const dispatch = useDispatch();
 
   useEffect(() => {

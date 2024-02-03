@@ -5,7 +5,8 @@ import { RootStore } from "../utils/TypeScript";
 import { logout } from "../redux/actions/authAction";
 
 const Menu = () => {
-  const { access_token, user } = useSelector((state: RootStore) => state.auth);
+  const access_token = useSelector((state: RootStore) => state.auth.access_token);
+  const user = useSelector((state: RootStore) => state.auth.user);
 
   const bfLoginLinks = [
     { label: "Login", path: "/login" },

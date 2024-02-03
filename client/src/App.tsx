@@ -23,6 +23,7 @@ import BlogDetail from "./views/BlogDetail";
 
 //Socket.io
 import { io } from "socket.io-client";
+import { SOCKET } from "./redux/types/socketType";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -33,13 +34,21 @@ const App = () => {
     dispatch(getHomeBlogs());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   const socket = io();
-  //   dispatch({ type: "SOCKET", payload: socket });
-  //   return () => {
-  //     socket.close();
-  //   };
-  // }, [dispatch]);
+  useEffect(() => {
+    const socket = io(`${import.meta.env.VITE_SERVER_URL}`, {
+      withCredentials: true
+    });
+    socket.on("connect", () => {
+      console.log(socket.id + " connected");
+    });
+    dispatch({ type: SOCKET, payload: socket });
+    return () => {
+      socket.on("disconnect", () => {
+        console.log(socket.id + " disconnected");
+      });
+      socket.close()
+    }
+  }, []);
 
   return (
     <Router>

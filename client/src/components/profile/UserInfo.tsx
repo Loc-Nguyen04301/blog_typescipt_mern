@@ -5,7 +5,7 @@ import NotFound from "../../views/NotFound";
 import { updateUser, resetPassword } from "../../redux/actions/profileAction";
 
 const UserInfo = () => {
-  const { auth } = useSelector((state: RootStore) => state);
+  const auth = useSelector((state: RootStore) => state.auth);
   const [user, setUser] = useState({
     name: "",
     account: "",

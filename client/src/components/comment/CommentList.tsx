@@ -22,7 +22,7 @@ const CommentList: React.FC<IProps> = ({
   setListReply,
 }) => {
   const [onReply, setOnReply] = useState(false);
-  const { auth } = useSelector((state: RootStore) => state);
+  const auth = useSelector((state: RootStore) => state.auth);
   const dispatch = useDispatch();
 
   const [edit, setEdit] = useState<IComment>();

@@ -9,7 +9,7 @@ interface IProps {
 }
 
 const CreateForm: React.FC<IProps> = ({ blog, setBlog }) => {
-  const { category } = useSelector((state: RootStore) => state);
+  const category = useSelector((state: RootStore) => state.category);
 
   const handleChangeInput = (e: InputChange) => {
     setBlog({ ...blog, [e.target.name]: e.target.value });

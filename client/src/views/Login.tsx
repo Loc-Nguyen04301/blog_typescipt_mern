@@ -13,7 +13,7 @@ const Login = () => {
   const [sms, setSms] = useState(false);
   const history = useHistory();
 
-  const { access_token } = useSelector((state: RootStore) => state.auth);
+  const access_token = useSelector((state: RootStore) => state.auth.access_token);
 
   useEffect(() => {
     if (access_token) history.push("/");

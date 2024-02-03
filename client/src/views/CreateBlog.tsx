@@ -32,7 +32,7 @@ const CreateBlog: React.FC<IProps> = ({ blog_id }) => {
   const divRef = useRef<HTMLDivElement>(null);
   const [content, setContent] = useState("");
 
-  const { auth } = useSelector((state: RootStore) => state);
+  const auth = useSelector((state: RootStore) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -8,7 +8,7 @@ import CardVert from "../components/card/CardVert ";
 import "../styles/home.css";
 
 const Home = () => {
-  const { homeBlogs } = useSelector((state: RootStore) => state);
+  const homeBlogs = useSelector((state: RootStore) => state.homeBlogs);
   if (homeBlogs.length === 0) return <Loading />;
   return (
     <div className="home_page">

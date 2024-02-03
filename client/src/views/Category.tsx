@@ -14,7 +14,8 @@ const Category = () => {
   const [name, setName] = useState("");
   const [edit, setEdit] = useState<ICategory | null>(null);
 
-  const { auth, category } = useSelector((state: RootStore) => state);
+  const auth = useSelector((state: RootStore) => state.auth);
+  const category = useSelector((state: RootStore) => state.category);
   const dispatch = useDispatch();
 
   const handleChangeName = (e: InputChange) => {

@@ -10,7 +10,8 @@ import Pagination from "../components/Pagination";
 import "../styles/blogs_category.css";
 
 const BlogsByCategory = () => {
-  const { category, blogsCategory } = useSelector((state: RootStore) => state);
+  const category = useSelector((state: RootStore) => state.category);
+  const blogsCategory = useSelector((state: RootStore) => state.blogsCategory);
   const dispatch = useDispatch();
   const { slug } = useParams<IParams>();
   const [categoryId, setCategoryId] = useState("");

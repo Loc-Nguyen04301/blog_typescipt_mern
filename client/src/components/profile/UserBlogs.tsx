@@ -10,7 +10,7 @@ import Pagination from "../Pagination";
 import { getBlogsByUserId } from "../../redux/actions/blogAction";
 
 const UserBlogs = () => {
-  const { blogsUser } = useSelector((state: RootStore) => state);
+  const blogsUser = useSelector((state: RootStore) => state.blogsUser);
   const dispatch = useDispatch();
   const userId = useParams<IParams>().slug;
 

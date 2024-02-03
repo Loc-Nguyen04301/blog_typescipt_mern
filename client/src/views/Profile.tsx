@@ -10,7 +10,8 @@ import "../styles/profile.css";
 
 const Profile = () => {
   const { slug } = useParams<IParams>();
-  const { access_token, user } = useSelector((state: RootStore) => state.auth);
+  const access_token = useSelector((state: RootStore) => state.auth.access_token);
+  const user = useSelector((state: RootStore) => state.auth.user);
 
   return (
     <div className="row my-3">
