@@ -10,7 +10,7 @@ const Search = () => {
   useEffect(() => {
     const fetchingData = async () => {
       if (search.length < 2) return setBlogs([]);
-      await getAPI(`blog/search/blogs?title=${search}`)
+      getAPI(`blog/search/blogs?title=${search}`)
         .then((res) => setBlogs(res.data))
         .catch((error) => console.log(error));
     };
