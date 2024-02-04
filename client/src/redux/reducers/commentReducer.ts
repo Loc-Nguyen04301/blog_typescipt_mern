@@ -18,7 +18,7 @@ const commentReducer = (
 ): ICommentState => {
   switch (action.type) {
     case CREATE_COMMENT:
-      return { ...state, data: [...state.data, action.payload] };
+      return { ...state, data: [action.payload, ...state.data] };
     case GET_COMMENTS:
       return action.payload;
     case REPLY_COMMENT:
@@ -43,11 +43,11 @@ const commentReducer = (
         data: state.data.map((item) =>
           item._id === action.payload.comment_root
             ? {
-                ...item,
-                replyCM: item.replyCM?.map((rp) =>
-                  rp._id === action.payload._id ? action.payload : rp
-                ),
-              }
+              ...item,
+              replyCM: item.replyCM?.map((rp) =>
+                rp._id === action.payload._id ? action.payload : rp
+              ),
+            }
             : item
         ),
       };
@@ -62,11 +62,11 @@ const commentReducer = (
         data: state.data.map((item) =>
           item._id === action.payload.comment_root
             ? {
-                ...item,
-                replyCM: item.replyCM?.filter(
-                  (rp) => rp._id !== action.payload._id
-                ),
-              }
+              ...item,
+              replyCM: item.replyCM?.filter(
+                (rp) => rp._id !== action.payload._id
+              ),
+            }
             : item
         ),
       };

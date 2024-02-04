@@ -38,8 +38,8 @@ const serverOptions = {
   }
 
 }
-const io = new Server(httpServer, serverOptions);
-io.on("connection", (socket: Socket) => {
+export const io = new Server(httpServer, serverOptions);
+io.on("connect", (socket: Socket) => {
   SocketServer(socket)
 });
 

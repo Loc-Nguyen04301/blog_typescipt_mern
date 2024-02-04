@@ -6,7 +6,6 @@ import Users from "../models/user.model";
 
 const auth = async (req: IReqAuth, res: Response, next: NextFunction) => {
   try {
-    console.log(req.header("Authorization"));
     const token = req.header("Authorization");
     if (!token)
       return res.status(400).json({ message: "Invalid Authentication." });
