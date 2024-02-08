@@ -1,0 +1,30 @@
+version: '3'
+services:
+  # React (FE) services:
+  client:
+    build:
+      context: ./client
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_SERVER_URL = http://localhost:5000
+  # Express (BE) services:
+  server:
+    build:
+      context: ./server
+    ports:
+      - "5000:5000"
+    environment:
+      - CLIENT_URL = http://localhost:3000
+      - MONGODB_URL = mongodb+srv://locdatabases:paavHqt1UmkEhWdA@cluster0.hq9trmt.mongodb.net/?retryWrites=true&w=majority
+      - ACTIVE_TOKEN_SECRET = your_active_token_secret
+      - ACCESS_TOKEN_SECRET = your_access_token_secret
+      - REFRESH_TOKEN_SECRET = your_refresh_token_secret
+      - MAIL_CLIENT_ID = 426085052563-a4sa34km1sigh0861n87fe814287tfht.apps.googleusercontent.com
+      - MAIL_CLIENT_SECRET = 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
+      - MAIL_REFRESH_TOKEN = 1//04DXMUbuOw_nACgYIARAAGAQSNwF-L9IrpHQ7-Isz-Mc4YxZuM8acwD6Pl7Dg6WaR11OTG0-7Vr9Fg6Ld5QHt9YXya5gNmzcIVMQ
+      - SENDER_EMAIL_ADDRESS = nguyengialoc7@gmail.com
+      - TWILIO_ACCOUNT_SID = AC3cc24d31c47057352d273bf457cdf957
+      - TWILIO_AUTH_TOKEN = 7e86873a463c1cffbda0fed2a3f6dfc0
+      - TWILIO_PHONE_NUMBER = +13475149583
+      - TWILIO_SERVICE_ID = VA1acaa6d671d40d0d9a49aa747d953374

@@ -2,10 +2,10 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node dist/server.js",
-    "dev": "ts-node-dev src/server.ts",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev src/index.ts",
     "build": "tsc"
   },
   "keywords": [],
@@ -22,6 +22,7 @@
     "mongoose": "^6.9.2",
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.1",
+    "socket.io": "^4.2.0",
     "twilio": "^4.7.2"
   },
   "devDependencies": {
